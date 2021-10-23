@@ -52,6 +52,7 @@ return require('packer').startup(function()
   use {'tanvirtin/monokai.nvim'}
   use {'rose-pine/neovim'}
   use {'akinsho/toggleterm.nvim'}
+  use {'lukas-reineke/indent-blankline.nvim'}
 
 end
 )

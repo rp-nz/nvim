@@ -9,5 +9,6 @@ require('treesitter-config')
 require('whichkey-config')
 require('telescope-config')
 require('lsp')
+require('indent-line-config')
 --vim.cmd('colorscheme nord') backup
 vim.cmd('colorscheme rose-pine')
