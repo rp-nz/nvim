@@ -7,7 +7,8 @@ local langservers = {
   'bashls',
   'yamlls',
   'jsonls',
-  'dockerls'
+  'dockerls',
+  'pylsp'
 }
 
 for _, server in ipairs(langservers) do

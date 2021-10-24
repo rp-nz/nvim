@@ -53,6 +53,7 @@ return require('packer').startup(function()
   use {'rose-pine/neovim'}
   use {'akinsho/toggleterm.nvim'}
   use {'lukas-reineke/indent-blankline.nvim'}
+  use {'uga-rosa/cmp-dictionary'}
 
 end
 )

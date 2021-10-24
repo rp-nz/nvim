@@ -3,7 +3,7 @@ local has_words_before = function()
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
   return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
 end
-
+ 
 local feedkey = function(key, mode)
   vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
 end
@@ -55,6 +55,11 @@ cmp.setup({
 
     -- For vsnip user.
     { name = 'vsnip' },
+    
+    { 
+        name = "dictionary",
+        keyword_length = 2,
+    },
 
     -- For luasnip user.
     -- { name = 'luasnip' },
@@ -64,7 +69,14 @@ cmp.setup({
 
     { name = 'buffer' },
   },
-  formatting = {
-    format = lspkind.cmp_format({with_text = true, maxwidth = 50})
-  }
+    formatting = {
+        format = lspkind.cmp_format{
+            with_text = true,
+            menu = {
+                buffer = "[Buf]",
+                nvim_lsp = "[LSP]",
+                dictionary = "[Dict]",
+            }
+        }
+    },
 })

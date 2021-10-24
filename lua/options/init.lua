@@ -5,8 +5,10 @@ local wo = vim.wo    -- window local
 local bo = vim.bo    -- buffer local
 local fn = vim.fn    -- access vim functions
 local cmd = vim.cmd  -- vim commands
+local opt = vim.opt  -- to set options
 
 cmd('filetype plugin indent on')
+opt.dictionary:append("/usr/share/dict/words")
 o.splitright = true
 o.whichwrap = '<,>,h,l'
 o.fileencoding = 'utf-8'
