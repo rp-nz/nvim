@@ -7,6 +7,13 @@ local fn = vim.fn    -- access vim functions
 local cmd = vim.cmd  -- vim commands
 local opt = vim.opt  -- to set options
 
+local function map(mode, lhs, rhs, opts)
+  local options = {noremap = true}
+  if opts then options = vim.tbl_extend('force', options, opts) end
+  vim.api.nvim_set_keymap(mode, lhs, rhs, options)
+end
+
+
 cmd('filetype plugin indent on')
 opt.dictionary:append("/usr/share/dict/words")
 o.splitright = true
@@ -41,3 +48,5 @@ o.timeoutlen = 10
 o.title = true
 o.hidden = true
 cmd('set relativenumber')
+map('n', '<leader>c', '<cmd>noh<CR>') --Clear highlights
+map('n', '<leader>o', 'o<Esc>')
