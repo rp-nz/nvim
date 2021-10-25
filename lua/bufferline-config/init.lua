@@ -1,5 +1,5 @@
 require("bufferline").setup{}
 vim.cmd[[
-nnoremap <silent>nb :BufferLineCycleNext<CR>
-nnoremap <silent>ob :BufferLineCyclePrev<CR>
+nnoremap <silent><F1> :BufferLineCycleNext<CR>
+nnoremap <silent><F2> :BufferLineCyclePrev<CR>
 ]]
