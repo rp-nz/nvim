@@ -1,6 +1,9 @@
 vim.opt.list = true
-vim.opt.listchars:append("space:⋅")
-vim.opt.listchars:append("eol:↴")
+
+if vim.fn.has('unix') == 1 then
+    vim.opt.listchars:append("space:⋅")
+    vim.opt.listchars:append("eol:↴")
+end
 
 require("indent_blankline").setup {
     --char = "|",
