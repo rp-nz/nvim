@@ -1,6 +1,6 @@
 vim.opt.list = true
 
-if vim.fn.has('unix') == 1 then
+if vim.fn.has('linux') == 1 then
     vim.opt.listchars:append("space:⋅")
     vim.opt.listchars:append("eol:↴")
 end
