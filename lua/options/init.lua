@@ -50,3 +50,4 @@ o.hidden = true
 cmd('set relativenumber')
 map('n', '<leader>c', '<cmd>noh<CR>') --Clear highlights
 map('n', '<leader>o', 'o<Esc>')
+vim.cmd("vnoremap // y/\\V<C-R>=escape(@\",'/\')<CR><CR>")

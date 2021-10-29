@@ -12,3 +12,9 @@ require('lsp')
 require('indent-line-config')
 --vim.cmd('colorscheme nord') backup
 vim.cmd('colorscheme rose-pine')
+
+--vim.cmd([[
+--function! FirstFunction()
+--    echom "First Vim function!"
+--endfunction
+--]])
