@@ -54,6 +54,6 @@ return require('packer').startup(function()
   use {'akinsho/toggleterm.nvim'}
   use {'lukas-reineke/indent-blankline.nvim'}
   use {'uga-rosa/cmp-dictionary'}
-
+  use {'folke/tokyonight.nvim'}
 end
 )

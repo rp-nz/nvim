@@ -11,7 +11,9 @@ require('telescope-config')
 require('lsp')
 require('indent-line-config')
 --vim.cmd('colorscheme nord') backup
-vim.cmd('colorscheme rose-pine')
+vim.g.tokyonight_style = "night"
+vim.cmd('colorscheme tokyonight')
+
 
 --vim.cmd([[
 --function! FirstFunction()
