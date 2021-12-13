@@ -10,8 +10,8 @@ vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
     }
 )
 require'nvim-treesitter.configs'.setup {
-  -- ensure_installed = "maintained",
-  ensure_installed = {"python", "json"},
+  ensure_installed = "maintained",
+  --ensure_installed = {"python", "json"},
   highlight = {
     enable = true,              -- false will disable the whole extension
     disable = {},  -- list of language that will be disabled
