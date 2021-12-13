@@ -10,8 +10,8 @@ vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
     }
 )
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = {"python", "html", "bash", "vim", "json", "lua", "yaml", "yang", "dockerfile", "go"}, -- one of "all", "maintained" (parsers with maintainers), or a list of languages
-  ignore_install = {}, -- List of parsers to ignore installing
+  -- ensure_installed = "maintained",
+  ensure_installed = {"python", "json"},
   highlight = {
     enable = true,              -- false will disable the whole extension
     disable = {},  -- list of language that will be disabled
@@ -20,6 +20,9 @@ require'nvim-treesitter.configs'.setup {
     -- Using this option may slow down your editor, and you may see some duplicate highlights.
     -- Instead of true it can also be a list of languages
     additional_vim_regex_highlighting = false,
+  },
+  indent = {
+      enable = true, 
   },
   autotag = {
     enable = true,
@@ -32,3 +35,7 @@ require'nvim-treesitter.configs'.setup {
     -- termcolors = {} -- table of colour name strings
   },
 }
+
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+
