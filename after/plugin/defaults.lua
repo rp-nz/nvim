@@ -41,6 +41,9 @@ keymap("n", "<leader>e", ":NvimTreeToggle<CR>", { desc = '[e]Open NvimTree'})
 -- Clear highlights
 keymap("n", "<leader>c", "<cmd>nohlsearch<CR>", { desc = '[c]Clear search highlights'})
 
+-- Telescope to look at all the marks 
+keymap("n", "<leader>m", require('telescope.builtin').marks, { desc = 'List of marks' })
+
 
 -- Normal --
 -- Better window navigation
