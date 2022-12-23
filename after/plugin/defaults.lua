@@ -43,6 +43,7 @@ keymap("n", "<leader>c", "<cmd>nohlsearch<CR>", { desc = '[c]Clear search highli
 
 -- Telescope to look at all the marks 
 keymap("n", "<leader>m", require('telescope.builtin').marks, { desc = 'List of marks' })
+keymap("n", "<leader>r", require('telescope.builtin').registers, { desc = 'Show registers' })
 
 
 -- Normal --
