@@ -72,3 +72,10 @@ require("toggleterm").setup{
     close_on_exit = true,
 }
 
+-- Nvim-autopairs configuration
+require("nvim-autopairs").setup {
+}
+
+-- Cokeline configuration
+require('cokeline').setup{
+}
