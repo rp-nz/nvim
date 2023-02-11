@@ -62,7 +62,7 @@ keymap("v", "<leader>y", "\"+y")
 
 -- Toggle configuration
 require("toggleterm").setup{
-    size = 20,
+    size = 100,
     open_mapping = [[<c-t>]], -- use ctrl-t to toggle toggletrem on or off
     hide_numbers = true,
     direction = "float",
@@ -71,11 +71,34 @@ require("toggleterm").setup{
     shade_terminals = true,
     close_on_exit = true,
 }
+function _G.set_terminal_keymaps()
+  local opts = {buffer = 0}
+  vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], opts)
+  vim.keymap.set('t', 'jk', [[<C-\><C-n>]], opts)
+  vim.keymap.set('t', '<C-h>', [[<Cmd>wincmd h<CR>]], opts)
+  vim.keymap.set('t', '<C-j>', [[<Cmd>wincmd j<CR>]], opts)
+  vim.keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], opts)
+  vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], opts)
+end
+
+-- if you only want these mappings for toggle term use term://*toggleterm#* instead
+vim.cmd('autocmd! TermOpen term://*toggleterm#* lua set_terminal_keymaps()')
+
 
 -- Nvim-autopairs configuration
 require("nvim-autopairs").setup {
 }
 
 -- Cokeline configuration
-require('cokeline').setup{
-}
+require('cokeline').setup({
+  show_if_buffers_are_at_least = 2,
+})
+
+vim.opt.list = true
+vim.opt.listchars:append "eol:↴"
+
+require('indent_blankline').setup ({
+  show_end_of_line = true,
+  show_current_context = true,
+  show_current_context_start = true,
+})
