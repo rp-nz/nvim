@@ -3,6 +3,9 @@ local keymap = vim.keymap.set
 -- Silent keymap option
 local opts = { silent = true }
 
+-- Set highlight on search
+vim.o.hlsearch = true
+
 vim.opt.relativenumber = true
 
 vim.opt.tabstop = 4

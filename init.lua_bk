@@ -3,7 +3,7 @@ local install_path = vim.fn.stdpath 'data' .. '/site/pack/packer/start/packer.nv
 local is_bootstrap = false
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
   is_bootstrap = true
-  vim.fn.system { 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path }
+  vim.fn.execute('!git clone https://github.com/wbthomason/packer.nvim ' .. install_path)
   vim.cmd [[packadd packer.nvim]]
 end
 
@@ -20,9 +20,6 @@ require('packer').startup(function(use)
 
       -- Useful status updates for LSP
       'j-hui/fidget.nvim',
-
-      -- Additional lua configuration, makes nvim stuff amazing
-      'folke/neodev.nvim',
     },
   }
 
@@ -60,7 +57,7 @@ require('packer').startup(function(use)
   -- Fuzzy Finder Algorithm which requires local dependencies to be built. Only load if `make` is available
   use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', cond = vim.fn.executable 'make' == 1 }
 
-  -- Add custom plugins to packer from ~/.config/nvim/lua/custom/plugins.lua
+  -- Add custom plugins to packer from /nvim/lua/custom/plugins.lua
   local has_plugins, plugins = pcall(require, 'custom.plugins')
   if has_plugins then
     plugins(use)
@@ -87,7 +84,7 @@ end
 -- Automatically source and re-compile packer whenever you save this init.lua
 local packer_group = vim.api.nvim_create_augroup('Packer', { clear = true })
 vim.api.nvim_create_autocmd('BufWritePost', {
-  command = 'source <afile> | silent! LspStop | silent! LspStart | PackerCompile',
+  command = 'source <afile> | PackerCompile',
   group = packer_group,
   pattern = vim.fn.expand '$MYVIMRC',
 })
@@ -96,7 +93,7 @@ vim.api.nvim_create_autocmd('BufWritePost', {
 -- See `:help vim.o`
 
 -- Set highlight on search
-vim.o.hlsearch = false
+vim.o.hlsearch = true
 
 -- Make line numbers default
 vim.wo.number = true
@@ -155,7 +152,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 -- See `:help lualine.txt`
 require('lualine').setup {
   options = {
-    icons_enabled = false,
+    icons_enabled = true,
     theme = 'onedark',
     component_separators = '|',
     section_separators = '',
@@ -221,10 +218,18 @@ vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { de
 -- See `:help nvim-treesitter`
 require('nvim-treesitter.configs').setup {
   -- Add languages to be installed here that you want installed for treesitter
-  ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'typescript', 'help', 'vim' },
+  ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'bash', 'help' },
+  -- ensure_installed = "all",
 
-  highlight = { enable = true },
-  indent = { enable = true, disable = { 'python' } },
+  --highlight = { enable = true }, this breaks treesitter 
+  indent = {
+     enable = true,
+     disable = {
+       "python",
+       "yaml",
+       "lua",
+     },
+  },
   incremental_selection = {
     enable = true,
     keymaps = {
@@ -327,59 +332,68 @@ local on_attach = function(_, bufnr)
 
   -- Create a command `:Format` local to the LSP buffer
   vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
-    vim.lsp.buf.format()
+    if vim.lsp.buf.format then
+      vim.lsp.buf.format()
+    elseif vim.lsp.buf.formatting then
+      vim.lsp.buf.formatting()
+    end
   end, { desc = 'Format current buffer with LSP' })
 end
-
--- Enable the following language servers
---  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
---
---  Add any additional override configuration in the following tables. They will be passed to
---  the `settings` field of the server config. You must look up that documentation yourself.
-local servers = {
-  -- clangd = {},
-  gopls = {},
-  pyright = {},
-  -- rust_analyzer = {},
-  -- tsserver = {},
-
-  lua_ls = {
-    Lua = {
-      workspace = { checkThirdParty = false },
-      telemetry = { enable = false },
-    },
-  },
-}
-
--- Setup neovim lua configuration
-require('neodev').setup()
---
--- nvim-cmp supports additional completion capabilities, so broadcast that to servers
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
 -- Setup mason so it can manage external tooling
 require('mason').setup()
 
+-- Enable the following language servers
+-- Feel free to add/remove any LSPs that you want here. They will automatically be installed
+-- local servers = { 'rust_analyzer', 'pyright', 'sumneko_lua', 'gopls', 'bashls' }
+local servers = { 'rust_analyzer', 'pyright', 'lua_ls', 'gopls', 'bashls' }
+
 -- Ensure the servers above are installed
-local mason_lspconfig = require 'mason-lspconfig'
-
-mason_lspconfig.setup {
-  ensure_installed = vim.tbl_keys(servers),
+require('mason-lspconfig').setup {
+  ensure_installed = servers,
 }
 
-mason_lspconfig.setup_handlers {
-  function(server_name)
-    require('lspconfig')[server_name].setup {
-      capabilities = capabilities,
-      on_attach = on_attach,
-      settings = servers[server_name],
-    }
-  end,
-}
+-- nvim-cmp supports additional completion capabilities
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+
+for _, lsp in ipairs(servers) do
+  require('lspconfig')[lsp].setup {
+    on_attach = on_attach,
+    capabilities = capabilities,
+  }
+end
 
 -- Turn on lsp status information
 require('fidget').setup()
+
+-- Example custom configuration for lua
+--
+-- Make runtime files discoverable to the server
+local runtime_path = vim.split(package.path, ';')
+table.insert(runtime_path, 'lua/?.lua')
+table.insert(runtime_path, 'lua/?/init.lua')
+
+require('lspconfig').lua_ls.setup {
+  on_attach = on_attach,
+  capabilities = capabilities,
+  settings = {
+    Lua = {
+      runtime = {
+        -- Tell the language server which version of Lua you're using (most likely LuaJIT)
+        version = 'LuaJIT',
+        -- Setup your lua path
+        path = runtime_path,
+      },
+      diagnostics = {
+        globals = { 'vim' },
+      },
+      workspace = { library = vim.api.nvim_get_runtime_file('', true) },
+      -- Do not send telemetry data containing a randomized but unique identifier
+      telemetry = { enable = false },
+    },
+  },
+}
 
 -- nvim-cmp setup
 local cmp = require 'cmp'

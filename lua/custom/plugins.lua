@@ -24,5 +24,9 @@ return function(use)
       --   require('cokeline').setup()
       -- end
         },
+    use {
+      'rafamadriz/friendly-snippets',
+       require("luasnip.loaders.from_vscode").lazy_load()
+        },
   })
 end
