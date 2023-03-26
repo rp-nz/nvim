@@ -12,6 +12,8 @@ vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
+vim.opt.timeoutlen = 800
+vim.opt.ttimeoutlen = 0
 
 vim.opt.smartindent = true
 
@@ -103,5 +105,6 @@ vim.opt.listchars:append "eol:↴"
 require('indent_blankline').setup ({
   show_end_of_line = true,
   show_current_context = true,
-  show_current_context_start = true,
+  -- show_current_context_start = true,
 })
+

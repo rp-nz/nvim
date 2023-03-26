@@ -28,5 +28,8 @@ return function(use)
       'rafamadriz/friendly-snippets',
        require("luasnip.loaders.from_vscode").lazy_load()
         },
+    use {
+      'Mofiqul/dracula.nvim'
+        },
   })
 end
